@@ -1,0 +1,150 @@
+.person-app{
+    min-height: 100vh;
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    justify-content: center;
+    padding: 30px 0;
+    background: #E3F1FF;
+    position: relative;
+}
+
+.feature-wrapper{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    /* border: 2px solid black; */
+    padding: 20px;
+    border-radius: 12px;
+}
+.feature-list{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.feature{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+}
+.feature-text{
+    font-size: 15px;
+    font-weight: 600;
+}
+.feature-delete{
+    background: #FF6D53;
+    padding: 5px 7px;
+    border-radius: 12px;
+    color: white;
+}
+
+
+.freeTime{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.partOfDay{
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    background: white;
+    border-radius: 12px;
+    max-width: 300px;
+    gap: 10px;
+}
+.partOfDay p {
+    align-self: center;
+}
+
+.timeWrapper{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+.timeWrapper div {
+    padding: 10px 15px;
+    border: 2px solid black;
+    border-radius: 12px;
+}
+.free{
+    color: white;
+    background: #6ACF74;
+}
+.busy{
+    color: white;
+    background: #FF6D53;
+}
+
+input{
+    min-width: 300px;
+    min-height: 50px;
+    border-radius: 12px;
+    padding: 0px 30px;
+    border: 2px solid black;
+    background: none;
+    font-size: 18px;
+}
+@media(max-width:320px) {
+    input{
+        max-width: 200px;
+        min-width: 200px;
+        font-size: 16px;
+        padding: 0;
+    }
+}
+
+
+.modal-wrapper{
+    position: fixed;
+    width: 100%;
+    background: black;
+    min-height: 100vh;
+    background-color: rgba(0,0,0,0.4);
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: .5s;
+    pointer-events: none;
+    opacity: 0;
+}
+.modal-wrapper.active{
+    opacity: 1;
+    pointer-events: all;
+}
+.modal-window{
+    min-width: 300px;
+    padding: 20px;
+    border-radius: 12px;
+    height: 200px;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    justify-content: center;
+}
+.btn-wrapper{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.delete-btn{
+    padding: 20px;
+}
+.add-btn{
+    padding: 20px;
+    background: #6ACF74;
+    border-radius: 12px;
+    color: white;
+}
+
