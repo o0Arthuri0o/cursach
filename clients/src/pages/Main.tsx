@@ -11,7 +11,9 @@ function Main({setInfo}: any) {
     useEffect(()=> {
       const fetchMasters = async() => {
         try {
-            const response = await fetch('https://jsonplaceholder.typicode.com/users')
+            
+            const response = await fetch('http://localhost:3000/client')
+            // укажи тут свой url 
             const data = await response.json()
             setMasters([...masters, ...data])
         }
@@ -24,21 +26,28 @@ function Main({setInfo}: any) {
     fetchMasters()
     }, [])
   
-    const [selectedFeature, setSelectedFeature] = useState({title: "", price: "", id: ""})
+
+  
+    const [selectedFeature, setSelectedFeature] = useState({title: "", fid: ""})
     const [features, setFeatures] = useState<any[]>([])
     useEffect(() => {
-      const fetchData =  async() => {
+      const fetchFeatures =  async() => {
         try {
-          const response = await fetch(`https://jsonplaceholder.typicode.com/posts?userId=${selectedMaster.id}`)
+          
+          const response = await fetch(`http://localhost:3000/feature?id=${selectedMaster.id}`) 
+          //укажи тут свой url 
           const data = await response.json()
-          setFeatures([...data])
+          console.log(data[0])
+
+          // !!!!!!!!!!!!!!! [0].feature убрать
+          setFeatures([...data[0].feature])
         }
         catch(e)
         {
             console.log(e)
         }
       }
-      fetchData()
+      fetchFeatures()
     }, [selectedMaster])
   
   
@@ -46,16 +55,47 @@ function Main({setInfo}: any) {
   
     const [selectedDate, setSelectedDate] = useState(today)
     const [selectedTime, setSelectedTime] = useState('')
-    const timeExample = {morning:['10:00', '11:00'], midday:['13:00','14:00', '15:00', '16:00', '17:00'], evening:['18:00', '20:00', '21:00']}
+    const [time, setTime] = useState({morning:[], midday:[], evening:[]})
+    useEffect(() => {
+      console.log('test')
+      const fetchTime =  async() => {
+        try {
+          // const response = await fetch(`https://jsonplaceholder.typicode.com/posts?userId=${selectedMaster.id}`)
+          const response = await fetch(`http://localhost:3000/freetime?id=${selectedMaster.id}&date=${selectedDate}`) 
+          //укажи тут свой url 
+          const data = await response.json()
+
+          //!!!!!!!!
+          if(data.length === 0) {
+            console.log('first')
+            setTime({morning:[], midday:[], evening:[]})
+            return
+          }
+          const dataOnlyTime = data[0].time
+          console.log(dataOnlyTime)
+          setTime(dataOnlyTime)
+        }
+        catch(e)
+        {
+            console.log(e)
+        }
+      }
+      if(selectedMaster.id && selectedFeature.fid) fetchTime()
+      
+    },[selectedFeature, selectedDate])
+    
+
+
+   
     const newInfo = () => {
-     return ({name:selectedMaster.name, id:selectedMaster.id, title:selectedFeature.title, fid:selectedFeature.id, date:selectedDate, time:selectedTime})
+     return ({name:selectedMaster.name, id:selectedMaster.id, title:selectedFeature.title, fid:selectedFeature.fid, date:selectedDate, time:selectedTime})
     }
   
 
     const navigate = useNavigate()
      return (
       <div className='app'>
-        <select className='mastersSelect' name="masters" value={selectedMaster.name} onChange={(e) => setSelectedMaster({name:e.target.value, id: e.target.value.split('-')[1]})} >
+        <select className='mastersSelect' name="masters" value={selectedMaster.name} onChange={(e: any) => setSelectedMaster({name:e.target.value, id: e.target.value.split('-')[1]})} >
           <option value="">--Выберите мастера--</option>
           {masters.map((master) => 
             <option key={master.id} value={master.name+'-'+master.id}>{master.name}</option>
@@ -68,22 +108,26 @@ function Main({setInfo}: any) {
   
           </select>
           :
-          <select className='featureSelect' name="features" id="features" value={selectedFeature.title} onChange={(e) => setSelectedFeature({title: e.target.value, price: e.target.value.split('-')[1], id:e.target.value.split('-')[1]})} >
-            <option value="" >--Выберите услугу--</option>
+          <select className='featureSelect' name="features" id="features" value={selectedFeature.title} onChange={(e) => setSelectedFeature({title: e.target.value, fid:e.target.value.split('-')[1]})} >
+            <option key='333' value="" >--Выберите услугу--</option>
             {features.map((feature) => 
               <option key={feature.id} value={feature.title + '-' + feature.id} >{feature.title}</option>
             )}
           </select>
         }
+
+        {!selectedFeature.title ?
+          <input type="date" disabled value={selectedDate} />
+          :<input type="date" value={selectedDate} onChange={(e) => {setSelectedDate(e.target.value)}} />
+
+        }
   
-        <input type="date" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} />
-  
-        {selectedFeature.title?
+        {(time.morning.length || time.midday.length)?
           <div className='freeTime'>
                 <div className='partOfDay'>
                     <p>Утро</p>
                     <div className='timeWrapper'>
-                    {timeExample.morning.map(time => 
+                    {time.morning.map(time => 
                     <div key={time} className={selectedTime == time ? 'selectedTime' : ''} onClick={(e) => setSelectedTime(e.target.textContent)}>{time}</div>  )}
                     </div>
                 
@@ -92,7 +136,7 @@ function Main({setInfo}: any) {
                 <div className='partOfDay'>
                     <p>День</p>
                     <div className='timeWrapper' >
-                    {timeExample.midday.map(time => 
+                    {time.midday.map(time => 
                     <div key={time} className={selectedTime == time ? 'selectedTime' : ''} onClick={(e) => setSelectedTime(e.target.textContent)}>{time}</div> )}
                     </div>
                 
@@ -100,7 +144,7 @@ function Main({setInfo}: any) {
                 <div className='partOfDay'>
                     <p>Вечер</p>
                     <div className='timeWrapper' >
-                    {timeExample.evening.map(time => 
+                    {time.evening.map(time => 
                     <div key={time} className={selectedTime == time ? 'selectedTime' : ''} onClick={(e) => setSelectedTime(e.target.textContent)}>{time}</div>)}
                     </div>
                 
@@ -109,7 +153,7 @@ function Main({setInfo}: any) {
           : null
         }
        
-        <button onClick={()=>{setInfo(newInfo()), navigate('/contact')}} >Записаться</button>
+        <button onClick={()=>{setInfo(newInfo()); navigate('/contact')}} >Записаться</button>
   
       </div>
     )
