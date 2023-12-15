@@ -6,7 +6,7 @@ function Main({setInfo}: any) {
     const today = new Date().toLocaleDateString().split('.').reverse().join('-');
   
     const [selectedMaster, setSelectedMaster] = useState({name: "", id: ""})
-    const [masters, setMasters] = useState<any[]>([])
+    const [masters, setMasters] = useState<any[]>([{name: "Виктор", id: "1"}, {name: "Данила", id: "1"}, {name: "Игорь", id: "1"}])
   
     useEffect(()=> {
       const fetchMasters = async() => {
@@ -29,7 +29,7 @@ function Main({setInfo}: any) {
 
   
     const [selectedFeature, setSelectedFeature] = useState({title: "", fid: ""})
-    const [features, setFeatures] = useState<any[]>([])
+    const [features, setFeatures] = useState<any[]>([{title: "Уход за бородой", fid: ""}, {title: "Детская стрижка", fid: ""}, {title: "Стрижка классическая", fid: ""}])
     useEffect(() => {
       const fetchFeatures =  async() => {
         try {
@@ -55,7 +55,7 @@ function Main({setInfo}: any) {
   
     const [selectedDate, setSelectedDate] = useState(today)
     const [selectedTime, setSelectedTime] = useState('')
-    const [time, setTime] = useState({morning:[], midday:[], evening:[]})
+    const [time, setTime] = useState({morning:['10:00', '11:00'], midday:['13:00', '14:00', '15:00', '16:00', '17:00'], evening:['18:00', '19:00', '20:00', '21:00', '22:00']})
     useEffect(() => {
       console.log('test')
       const fetchTime =  async() => {

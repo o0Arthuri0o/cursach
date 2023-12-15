@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react'
 import './Person.css'
 const Person = () => {
   const token = localStorage.getItem('token')
-  const masterInfoExemple = {id:1, name:'Victor'}
+  const masterInfoExemple = {id:1, name:'Виктор'}
   
 
 
   //добавление новой услуги и отрисовка услуг
   const [newFeature, setNewFeature] = useState('')
-  const [featureList, setFeatureList] = useState([{title:'test1'}, {title:'test2'}, {title:'test3'}])
+  const [featureList, setFeatureList] = useState([{title:'Стрижка классическая'}, {title:'Уход за бородой'}, {title:'Детская стрижка'}])
   // useEffect(()=>{
   //   const fetchFeature = async() => {
   //     try{
@@ -79,7 +79,7 @@ const Person = () => {
   //Время и дата
   const time = {
     morning: [['10:00', 'free'],['11:00', 'free'],['12:00', 'free']],
-    midday: [['13:00', 'free'],['14:00', 'free'],['15:00', 'free'],['16:00', 'free'],['17:00', 'free']],
+    midday: [['13:00', 'busy'],['14:00', 'free'],['15:00', 'busy'],['16:00', 'free'],['17:00', 'free']],
     evening: [['18:00', 'free'],['19:00', 'free'],['20:00', 'free'],['21:00', 'free'],['22:00', 'free']]
   }
 
@@ -142,7 +142,7 @@ const Person = () => {
                 <div className='partOfDay'>
                     <p>Утро</p>
                     <div className='timeWrapper'>
-                    {time.midday.map(slot => {
+                    {time.morning.map(slot => {
                       const [hour, switcH] = slot
                        return <div className={switcH === 'free' ? 'free':'busy'}>{hour}</div>
                     })}
@@ -163,7 +163,7 @@ const Person = () => {
                 <div className='partOfDay'>
                     <p>Вечер</p>
                     <div className='timeWrapper' >
-                    {time.midday.map(slot => {
+                    {time.evening.map(slot => {
                       const [hour, switcH] = slot
                        return <div className={switcH === 'free' ? 'free':'busy'}>{hour}</div>
                     })}
